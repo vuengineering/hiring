@@ -1,0 +1,20 @@
+{
+  "short_name": "Inspektor",
+  "name": "Inspektor",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "vue-logo-400x400.jpg",
+      "type": "image/jpg",
+      "sizes": "400x400"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

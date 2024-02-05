@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  blob-storage:
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 20s
+    build:
+        context: .
+        dockerfile: azurite/Dockerfile
+    container_name: inspektor-blob-storage
+    ports:
+      - "10000:10000"
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://localhost:10000/devstoreaccount1;"
+    healthcheck:
+      test: ["CMD", "az", "storage", "container", "exists", "-n", "inspektor"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+        - blob-storage-data:/opt/azurite/data
+  postgres:
+    image: postgres:14.6
+    container_name: inspektor-postgres
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: inspektor
+        POSTGRES_PASSWORD: inspektor
+        POSTGRES_DB: inspektor
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "inspektor"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+    postgres-data:
+    blob-storage-data:

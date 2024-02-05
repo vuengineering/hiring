@@ -1,0 +1,10 @@
+.cardContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.cardBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
