@@ -1,59 +1,13 @@
-# Software Engineering Hiring Test
+# New requirements
 
-## Instructions
+~~This git repository uses [git-lfs](https://git-lfs.com/)~~
 
-You are working on a platform to automate the visual inspection in the manufacturing industry called "Inspektor". The
-platform is composed
-of a web application and a backend service. The web application is used by the factory workers to create new inspections
-("inspection cases") and attach images of the parts to be inspected to the cases. The backend service is responsible for
-storing the images and the results of the inspection, and for running the inspection algorithms.
+GitHub does not support LFS in public forks, file added without git lfs.
 
-Currently, the platform is in the early stages of development. The backend service is able to create inspection cases
-and store images but the capability to run the actual inspection algorithms is not yet implemented. The web application is
-able to create inspection cases and attach images to them, but it is not yet able to display the results of the
-inspection.
-
-Your task is to implement the missing functionality in the backend service and the web application. The backend service
-should be able to run the inspection algorithms and store the results. The web application should be able to display the
-results of the inspection in a simple way.
-
-Keep it simple. We would rather see a super basic solution covering frontend and backend that works than a
-complex but partial solution. Setting up your local development environment is also part of the test and is counted
-towards the time you have to complete the test.
-
-Feel free to:
-
-* mock the inspection algorithms in the backend service and hard-code the results. The focus of this test is on the
-  software engineering aspects of the solution, not on the machine learning aspects.
-* modify the existing code as you see fit (including the models, views, serializers, etc).
-* add new files or directories to the project.
-* add new dependencies to the project.
-* add new endpoints to the REST API.
-
-This task is kept intentionally open-ended to allow you to showcase your skills and experience. Nothing is off-limits and
-we encourage you to make any changes you see fit to the existing codebase if you think it will make your job easier.
-We also value maintainability and readability of the code over complexity and cleverness.
-
-## General
-
-### Submission
-
-Please checkout in a new branch from `main` and submit your solution as a pull request in this repository.
-
-### Time limit
-
-We expect you to spend no more than 6 hours on this test. Do as much as you can within this time limit. If you don't have
-time to finish everything, please document roughly what you would have done if you had more time in a file called
-`TODO.md`.
-
-## Technical details
-
-The backend service is implemented using Django and can be found in the `backend` directory.
-The web application is implemented using React and can be found in the `frontend` directory.
-The application is served as a monolithic application, with the frontend assets being served by the backend.
-Please read `INSTRUCTIONS.md` for more details on how to install and run the application locally.
-
-A stub implementation of the `run_inference_on_image` method to run the inspection algorithms is provided in the file
-`backend/inspektor/apps/ml/tasks.py`. You can use this method to simulate the inspection algorithms. The method takes an
-`inspektor.apps.core.models.Image` as input. The `Image` model is defined in the
-file `backend/inspektor/apps/core/models.py`.
+# TODO:
+* replace deprecate package in frontend - `[DEP0040] DeprecationWarning: The 'punycode' module is deprecated. Please use a userland alternative instead.`
+* write frontend test, fix broken fe test
+* extend backend test, currently there is one backend test to show an example
+* write better frontend, currently is as minimal as possible
+* attach Pycharm test configuration (like [backend django configuration](../.idea/runConfigurations/backend.xml))
+* write documentation about pre-commit content (fe and be formatters)

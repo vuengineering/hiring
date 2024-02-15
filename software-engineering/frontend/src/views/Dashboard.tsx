@@ -5,6 +5,7 @@ import {
   EuiPageTemplate,
   EuiTableFieldDataColumnType,
 } from "@elastic/eui";
+import "./Dashboard.css";
 import { caseClient, LoaderData } from "../utils";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Case } from "../api/generated";
@@ -56,7 +57,9 @@ export function Dashboard() {
     const { id } = ccase;
     return {
       "data-test-subj": `row-${id}`,
-      className: "customRowClass",
+      className:
+        "customRowClass " +
+        (ccase.all_photos_in_class_zero ? "caseCorrect" : "caseWithErrors"),
       onClick: () => {
         navigate(`/case/${id}`);
       },

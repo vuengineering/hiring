@@ -3,6 +3,10 @@
   display: inline-block;
 }
 
+.cardWithError {
+  color: tomato;
+}
+
 .cardBadge {
   position: absolute;
   top: 10px;

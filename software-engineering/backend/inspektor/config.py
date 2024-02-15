@@ -47,6 +47,10 @@ class DjangoSettings(BaseSettings):
     url: str
 
 
+class ClassificationEngineSettings(BaseSettings):
+    path: str
+
+
 class GlobalSettings(BaseSettings):
     """
     Global settings for Inspektor.
@@ -66,6 +70,7 @@ class GlobalSettings(BaseSettings):
     env: Env
     db: DbSettings
     blob_storage: AzureBlobStorageSettings
+    classification_engine: ClassificationEngineSettings
     django: DjangoSettings
 
     model_config = SettingsConfigDict(

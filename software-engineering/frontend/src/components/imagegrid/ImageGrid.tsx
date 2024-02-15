@@ -84,7 +84,17 @@ export function ImageGrid() {
                   paddingSize="s"
                   textAlign="left"
                   image={<img src={image.file} alt="" height={200} />}
-                  title=""
+                  title={
+                    <div
+                      className={
+                        image.image_class === 0
+                          ? "cardCorrect"
+                          : "cardWithError"
+                      }
+                    >
+                      Image class {image.image_class}
+                    </div>
+                  }
                   selectable={{
                     onClick: () => cardClicked(image.id),
                     isSelected:

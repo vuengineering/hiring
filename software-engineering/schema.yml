@@ -347,6 +347,9 @@ components:
           items:
             type: integer
             nullable: true
+        all_photos_in_class_zero:
+          type: boolean
+          readOnly: true
         open_datetime:
           type: string
           format: date-time
@@ -357,6 +360,7 @@ components:
           format: date-time
           nullable: true
       required:
+      - all_photos_in_class_zero
       - id
       - open_datetime
     CaseRequest:
@@ -386,10 +390,14 @@ components:
         file:
           type: string
           format: uri
+        image_class:
+          type: integer
+          readOnly: true
       required:
       - capture_datetime
       - file
       - id
+      - image_class
     ImageRequest:
       type: object
       properties:
