@@ -19,7 +19,11 @@ class IdInFilter(filters.FilterSet):
 
 class ModelViewSetWithIds(viewsets.ModelViewSet):
     """
-    A base viewset that allows reading (and enables filtering objects by ids), creating and updating objects.
+    ModelViewSet provides default create, retrieve, update, partial_update, destroy and list actions since it uses
+    GenericViewSet and all the available mixins.
+    Then, after you register the view to the router, you can:
+        + Create an item and list all the items
+        + Retrieve, update, and delete a single item
     """
 
     filter_backends = [filters.DjangoFilterBackend]
@@ -41,7 +45,21 @@ class ImageViewSet(ModelViewSetWithIds):
     serializer_class = serializers.ImageSerializer
     model_class = models.Image
 
+    # Returns a dictionary containing any extra context that should be supplied to the serializer. Defaults to including
+    # 'request', 'view' and 'format' keys.
+    # def get_serializer_context(self):
+    #     context = super().get_serializer_context()
+    #     context.update({"show_extra_data": self.request.query_params.get('show_extra_data', False)})
+    #     return context
+
+    # Called by CreateModelMixin when saving a new object instance
     def perform_create(self, serializer):
         image = serializer.save()
         # ↓↓↓ this is where the magic should happen ↓↓↓
         run_inference_on_image(image)
+
+
+class InspectionViewSet(ModelViewSetWithIds):
+    queryset = models.Inspection.objects.all()
+    serializer_class = serializers.InspectionSerializer
+    model_class = models.Inspection

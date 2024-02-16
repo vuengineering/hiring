@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 
@@ -54,7 +55,7 @@ class Image(models.Model):
         db_table = "image"
 
     def __str__(self):
-        return self.file.name
+        return f"Image name: {self.file.name} and id: {self.id} "
 
     def delete(self, *args, **kwargs):
         """
@@ -62,3 +63,42 @@ class Image(models.Model):
         """
         self.file.delete()
         super().delete(*args, **kwargs)
+
+
+class Inspection(models.Model):
+    """
+    The results of the Inspection algorithm applied to an image.
+
+    """
+
+    # Related Image will be a FK
+    image = models.ForeignKey(
+        Image,
+        on_delete=models.CASCADE,
+        related_name="inspections",
+        blank=True,
+        null=True,
+    )
+    inspection_time = models.DateTimeField()
+    inspection_result = models.BooleanField()
+    inspection_errors = ArrayField(
+        models.CharField(max_length=120, blank=True),
+        size=10,
+    )
+
+    class Meta:
+        db_table = "inspection"
+
+    def __str__(self):
+        return f"Image {self.image.id} inspection is: {self.inspection_result} with {self.inspection_errors}"
+
+    def delete(self, *args, **kwargs):
+        """
+        Delete the file from the storage when the object is deleted
+        """
+        self.file.delete()
+        super().delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.inspection_time = timezone.now()
+        return super().save(*args, **kwargs)
