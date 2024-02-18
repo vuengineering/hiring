@@ -50,6 +50,8 @@ class Image(models.Model):
     capture_datetime = models.DateTimeField()
     file = models.ImageField(upload_to=get_image_path)
 
+    inspection_result = models.CharField(max_length=100, blank=True, null=True)
+
     class Meta:
         db_table = "image"
 
