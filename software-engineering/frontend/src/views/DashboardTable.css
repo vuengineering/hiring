@@ -1,0 +1,19 @@
+.customRowClass {
+    vertical-align: middle;
+    border: 8px solid #343741;
+    font-weight: inherit;
+    color: gray;
+    background-color: #fff;
+}
+
+.customRowClass:hover {
+    background-color: rgba(54,162,239,.05);
+    cursor: pointer;
+    color: #fff;
+}
+
+.customCellClass {
+    overflow: hidden;
+    padding: 1rem;
+    text-align: center;
+}

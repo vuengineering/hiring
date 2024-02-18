@@ -4,6 +4,7 @@ import {
   EuiFlexGrid,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiHealth,
   useIsWithinBreakpoints,
 } from "@elastic/eui";
 import { ImageGridPagination } from "./ImageGridPagination";
@@ -77,19 +78,20 @@ export function ImageGrid() {
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFlexGrid responsive={true} columns={isMobile ? 2 : 4}>
-          {pageImages.map((image, index) => (
+          {pageImages.map(({id, file, inspection_result}, index) => (
             <EuiFlexItem key={index}>
               <div className="cardContainer">
                 <EuiCard
                   paddingSize="s"
                   textAlign="left"
-                  image={<img src={image.file} alt="" height={200} />}
+                  image={<img src={file} alt="" height={200} />}
                   title=""
+                  footer={<EuiHealth textSize="m" color={inspection_result === "Defective" ? "danger" : "primary"}>{inspection_result}</EuiHealth>}
                   selectable={{
-                    onClick: () => cardClicked(image.id),
+                    onClick: () => cardClicked(id),
                     isSelected:
-                      selectedImages[image.id] &&
-                      selectedImages[image.id].isSelected,
+                      selectedImages[id] &&
+                      selectedImages[id].isSelected,
                   }}
                 />
               </div>
