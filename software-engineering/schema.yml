@@ -7,332 +7,344 @@ paths:
   /api/case/:
     get:
       operationId: case_list
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: query
-        name: id
-        schema:
-          type: array
-          items:
-            type: integer
-        description: Multiple values may be separated by commas.
-        explode: false
-        style: form
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Multiple values may be separated by commas.
+          explode: false
+          style: form
       tags:
-      - case
+        - case
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Case'
-          description: ''
+                  $ref: "#/components/schemas/Case"
+          description: ""
     post:
       operationId: case_create
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       tags:
-      - case
+        - case
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Case'
-          description: ''
+                $ref: "#/components/schemas/Case"
+          description: ""
   /api/case/{id}/:
     get:
       operationId: case_retrieve
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this case.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this case.
+          required: true
       tags:
-      - case
+        - case
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Case'
-          description: ''
+                $ref: "#/components/schemas/Case"
+          description: ""
     put:
       operationId: case_update
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this case.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this case.
+          required: true
       tags:
-      - case
+        - case
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CaseRequest'
+              $ref: "#/components/schemas/CaseRequest"
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Case'
-          description: ''
+                $ref: "#/components/schemas/Case"
+          description: ""
     patch:
       operationId: case_partial_update
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this case.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this case.
+          required: true
       tags:
-      - case
+        - case
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedCaseRequest'
+              $ref: "#/components/schemas/PatchedCaseRequest"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedCaseRequest'
+              $ref: "#/components/schemas/PatchedCaseRequest"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedCaseRequest'
+              $ref: "#/components/schemas/PatchedCaseRequest"
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Case'
-          description: ''
+                $ref: "#/components/schemas/Case"
+          description: ""
     delete:
       operationId: case_destroy
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this case.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this case.
+          required: true
       tags:
-      - case
+        - case
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/image/:
     get:
       operationId: image_list
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: query
-        name: id
-        schema:
-          type: array
-          items:
-            type: integer
-        description: Multiple values may be separated by commas.
-        explode: false
-        style: form
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Multiple values may be separated by commas.
+          explode: false
+          style: form
       tags:
-      - image
+        - image
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Image'
-          description: ''
+                  $ref: "#/components/schemas/Image"
+          description: ""
     post:
       operationId: image_create
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       tags:
-      - image
+        - image
       requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ImageRequest'
+              $ref: "#/components/schemas/ImageRequest"
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
+                $ref: "#/components/schemas/Image"
+          description: ""
   /api/image/{id}/:
     get:
       operationId: image_retrieve
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this image.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
       tags:
-      - image
+        - image
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
+                $ref: "#/components/schemas/Image"
+          description: ""
     put:
       operationId: image_update
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this image.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
       tags:
-      - image
+        - image
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ImageRequest'
+              $ref: "#/components/schemas/ImageRequest"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ImageRequest'
+              $ref: "#/components/schemas/ImageRequest"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ImageRequest'
+              $ref: "#/components/schemas/ImageRequest"
         required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
+                $ref: "#/components/schemas/Image"
+          description: ""
     patch:
       operationId: image_partial_update
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this image.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
       tags:
-      - image
+        - image
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedImageRequest'
+              $ref: "#/components/schemas/PatchedImageRequest"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedImageRequest'
+              $ref: "#/components/schemas/PatchedImageRequest"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedImageRequest'
+              $ref: "#/components/schemas/PatchedImageRequest"
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Image'
-          description: ''
+                $ref: "#/components/schemas/Image"
+          description: ""
     delete:
       operationId: image_destroy
-      description: A base viewset that allows reading (and enables filtering objects
+      description:
+        A base viewset that allows reading (and enables filtering objects
         by ids), creating and updating objects.
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        description: A unique integer value identifying this image.
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this image.
+          required: true
       tags:
-      - image
+        - image
       security:
-      - cookieAuth: []
-      - basicAuth: []
+        - cookieAuth: []
+        - basicAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
 components:
   schemas:
@@ -357,8 +369,8 @@ components:
           format: date-time
           nullable: true
       required:
-      - id
-      - open_datetime
+        - id
+        - open_datetime
     CaseRequest:
       type: object
       properties:
@@ -383,13 +395,16 @@ components:
         capture_datetime:
           type: string
           format: date-time
+        inspection_result:
+          type: string
+          nullable: true
         file:
           type: string
           format: uri
       required:
-      - capture_datetime
-      - file
-      - id
+        - capture_datetime
+        - file
+        - id
     ImageRequest:
       type: object
       properties:
@@ -403,8 +418,8 @@ components:
           type: string
           format: binary
       required:
-      - capture_datetime
-      - file
+        - capture_datetime
+        - file
     PatchedCaseRequest:
       type: object
       properties:
@@ -438,4 +453,4 @@ components:
       in: cookie
       name: sessionid
 servers:
-- http://localhost:8000
+  - http://localhost:8000
