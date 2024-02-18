@@ -32,6 +32,11 @@ class CaseViewSet(ModelViewSetWithIds):
     serializer_class = serializers.CaseSerializer
     model_class = models.Case
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.order_by('-close_datetime')  # Sort by close_datetime in descending order
+        return queryset
+
 
 @extend_schema_view(
     create=extend_schema(request={"multipart/form-data": serializers.ImageSerializer})
@@ -43,5 +48,9 @@ class ImageViewSet(ModelViewSetWithIds):
 
     def perform_create(self, serializer):
         image = serializer.save()
-        # ↓↓↓ this is where the magic should happen ↓↓↓
-        run_inference_on_image(image)
+        # Run inspection algorithm
+        inspection_result = run_inference_on_image(image)
+        # Store inspection result
+        image.inspection_result = inspection_result
+        image.save()
+
