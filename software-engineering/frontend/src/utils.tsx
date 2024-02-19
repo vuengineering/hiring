@@ -1,4 +1,4 @@
-import { CaseApi, ImageApi } from "./api/generated";
+import { CaseApi, ImageApi, InspectionApi } from "./api/generated";
 import { LoaderFunction } from "react-router-dom";
 
 export type LoaderData<TLoaderFn extends LoaderFunction> = Awaited<
@@ -15,3 +15,4 @@ function getBaseUrl() {
 
 export const caseClient = new CaseApi(undefined, getBaseUrl());
 export const imageClient = new ImageApi(undefined, getBaseUrl());
+export const inspectionClient = new InspectionApi(undefined, getBaseUrl());

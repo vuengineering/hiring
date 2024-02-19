@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from "react";
 import {
-  EuiCard,
+  EuiButton,
   EuiFlexGrid,
   EuiFlexGroup,
   EuiFlexItem,
   useIsWithinBreakpoints,
+  EuiModal,
+  EuiModalBody,
+  EuiModalFooter,
+  EuiModalHeader,
+  EuiModalHeaderTitle,
+  EuiSpacer,
+  EuiOutsideClickDetector,
+  EuiText,
 } from "@elastic/eui";
 import { ImageGridPagination } from "./ImageGridPagination";
-import "./CardWithBadge.css";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { LoaderData } from "../../utils";
 import { loader } from "../../views/CaseOverview";
 import { Image } from "../../api/generated";
 import { ImageGridControls } from "./ImageGridControls";
+
+// Import custom styles
+import "./CardWithBadge.css";
+import { ImageGridItem } from "./ImageGridItem";
 
 export interface SelectedImages {
   [key: number]: { isSelected: boolean; image: Image };
 }
 
 export function ImageGrid() {
+  // Get the loader data for the nearest ancestor Route loader
   const { images, caseObject } = useLoaderData() as LoaderData<typeof loader>;
 
   const [pageIndex, setPageIndex] = useState(0);
@@ -28,6 +40,55 @@ export function ImageGrid() {
   const [visibleImages, setVisibleImages] = useState<Image[]>(allImages);
 
   const isMobile = useIsWithinBreakpoints(["xs", "s", "m"]);
+
+  // INSPECTION DATA MODAL
+  const [inspectionModal, setInspectionModal] = useState<{
+    show: boolean;
+    imgId: number | null;
+  }>({ show: false, imgId: null });
+
+  const handleOpenInspectionModal =
+    (imgId: number) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setInspectionModal({ show: true, imgId: imgId });
+    };
+  const handleCloseInspectionModal = () =>
+    setInspectionModal({ show: false, imgId: null });
+
+  function InspectionModal({ imgId }: { imgId: number | null }) {
+    let imgToShow = allImages.find((img) => img.id === imgId);
+    let filePath = imgToShow!.file.split("?")[0];
+    let filename = filePath.substring(filePath.lastIndexOf("/") + 1);
+    return (
+      <EuiOutsideClickDetector onOutsideClick={handleCloseInspectionModal}>
+        <EuiModal onClose={handleCloseInspectionModal}>
+          <EuiModalHeader>
+            <EuiModalHeaderTitle>Inspection Errors History</EuiModalHeaderTitle>
+          </EuiModalHeader>
+          <EuiModalBody>
+            Showing all inspections run on img <b>{filename}</b>
+            <EuiSpacer />
+            {imgId && (
+              <EuiText>
+                <ul>
+                  {imgToShow!.inspections![0].inspection_errors.map(
+                    (err, i) => (
+                      <li key={i}>{err}</li>
+                    ),
+                  )}
+                </ul>
+              </EuiText>
+            )}
+          </EuiModalBody>
+          <EuiModalFooter>
+            <EuiButton onClick={handleCloseInspectionModal} fill>
+              Close
+            </EuiButton>
+          </EuiModalFooter>
+        </EuiModal>
+      </EuiOutsideClickDetector>
+    );
+  }
 
   useEffect(() => {
     setAllImages(images);
@@ -77,25 +138,25 @@ export function ImageGrid() {
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFlexGrid responsive={true} columns={isMobile ? 2 : 4}>
-          {pageImages.map((image, index) => (
-            <EuiFlexItem key={index}>
-              <div className="cardContainer">
-                <EuiCard
-                  paddingSize="s"
-                  textAlign="left"
-                  image={<img src={image.file} alt="" height={200} />}
-                  title=""
-                  selectable={{
-                    onClick: () => cardClicked(image.id),
-                    isSelected:
-                      selectedImages[image.id] &&
-                      selectedImages[image.id].isSelected,
-                  }}
-                />
-              </div>
-            </EuiFlexItem>
+          {/* GENERATE IMAGE GRID ITEMS */}
+          {pageImages.map((img, i) => (
+            <ImageGridItem
+              key={i}
+              image={img}
+              index={i}
+              cardClicked={cardClicked}
+              handleOpenInspectionModal={handleOpenInspectionModal}
+              isSelected={
+                selectedImages[img.id] && selectedImages[img.id].isSelected
+              }
+            />
           ))}
         </EuiFlexGrid>
+        {/* Modal to show inspection errors */}
+        {inspectionModal.show && inspectionModal.imgId && (
+          <InspectionModal imgId={inspectionModal.imgId} />
+        )}
+
         {pageImages.length > 0 && (
           <ImageGridPagination
             imagesPerPage={imagesPerPage}

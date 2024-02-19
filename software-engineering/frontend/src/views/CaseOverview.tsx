@@ -27,6 +27,7 @@ export function CaseOverview() {
 
   const navigate = useNavigate();
 
+  // Get the loader data for the nearest ancestor Route loader
   const { caseObject, images } = useLoaderData() as LoaderData<typeof loader>;
 
   let infos = [
