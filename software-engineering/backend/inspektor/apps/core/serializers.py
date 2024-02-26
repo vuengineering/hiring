@@ -23,3 +23,13 @@ class ImageSerializer(serializers.ModelSerializer):
         model = models.Image
         fields = "__all__"
         parser_classes = [MultiPartParser]
+
+class ResultSerializer(serializers.ModelSerializer):
+    passed = serializers.PrimaryKeyRelatedField(
+        queryset=models.InspectionResult.objects.all(), required=False, allow_null=True
+    )
+
+    class Meta:
+        model = models.InspectionResult
+        fields = "__all__"
+        parser_classes = [MultiPartParser]

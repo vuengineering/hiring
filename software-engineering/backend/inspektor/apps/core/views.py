@@ -46,6 +46,16 @@ class ImageViewSet(ModelViewSetWithIds):
         # ↓↓↓ this is where the magic should happen ↓↓↓
         run_inference_on_image(image)
 
+@extend_schema_view(
+    create=extend_schema(request={"multipart/form-data": serializers.ResultSerializer})
+)
 class ResultViewSet(ModelViewSetWithIds):
-    pass
+    """
+    All Results in serelized will be returned
+    """
+
+    queryset = models.InspectionResult.objects.all()
+    serializer_class = serializers.ResultSerializer
+
+
 
