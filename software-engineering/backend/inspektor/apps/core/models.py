@@ -62,3 +62,42 @@ class Image(models.Model):
         """
         self.file.delete()
         super().delete(*args, **kwargs)
+
+
+class ResultStatus(models.IntegerChoices):
+    """
+    ResultStatus is the status of result.
+    """
+
+    IN_PROGRESS = 1  # initial status
+    PASS = 2
+    FAIL = 3
+
+
+class Result(models.Model):
+    """
+    An ImageResult is the result of an image run.
+    """
+
+    image = models.OneToOneField(
+        Image, on_delete=models.CASCADE, related_name="results", blank=True, null=True
+    )
+
+    # Using JSON because mostly we get `ML` results in Dic or List format.
+    result = models.JSONField(
+        null=True
+    )  # TODO: can be other type of field instead of json
+
+    status = models.IntegerField(choices=ResultStatus, default=ResultStatus.IN_PROGRESS)
+
+    class Meta:
+        db_table = "result"
+
+    def get_status(self):
+        """
+        returns the status value in human readable form
+
+        Returns:
+            string: "In progress", "Pass" or "Fail"
+        """
+        return ResultStatus(self.status).label
