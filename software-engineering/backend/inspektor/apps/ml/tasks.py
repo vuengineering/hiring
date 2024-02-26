@@ -12,5 +12,4 @@ def run_inference_on_image(image: Image):
 
 
     """
-    result = model.predict(image)
-    return result
+    pass

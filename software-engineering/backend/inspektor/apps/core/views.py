@@ -45,3 +45,7 @@ class ImageViewSet(ModelViewSetWithIds):
         image = serializer.save()
         # ↓↓↓ this is where the magic should happen ↓↓↓
         run_inference_on_image(image)
+
+class ResultViewSet(ModelViewSetWithIds):
+    pass
+

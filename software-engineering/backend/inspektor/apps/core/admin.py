@@ -20,3 +20,13 @@ class ImageAdmin(admin.ModelAdmin):
         "capture_datetime",
     )
     list_filter = ("case",)
+
+@admin.register(models.InspectionResult)
+class ResultAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "part_number",
+        "inspector",
+        "inspection_date",
+        "passed",
+    )
