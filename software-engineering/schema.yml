@@ -334,8 +334,168 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/result/:
+    get:
+      operationId: result_list
+      description: All Results in serelized will be returned
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      tags:
+      - result
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Result'
+          description: ''
+    post:
+      operationId: result_create
+      description: All Results in serelized will be returned
+      tags:
+      - result
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResultRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+          description: ''
+  /api/result/{id}/:
+    get:
+      operationId: result_retrieve
+      description: All Results in serelized will be returned
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inspection result.
+        required: true
+      tags:
+      - result
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+          description: ''
+    put:
+      operationId: result_update
+      description: All Results in serelized will be returned
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inspection result.
+        required: true
+      tags:
+      - result
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResultRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResultRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+          description: ''
+    patch:
+      operationId: result_partial_update
+      description: All Results in serelized will be returned
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inspection result.
+        required: true
+      tags:
+      - result
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResultRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedResultRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedResultRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+          description: ''
+    delete:
+      operationId: result_destroy
+      description: All Results in serelized will be returned
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inspection result.
+        required: true
+      tags:
+      - result
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
 components:
   schemas:
+    BlankEnum:
+      enum:
+      - ''
     Case:
       type: object
       properties:
@@ -371,6 +531,16 @@ components:
           type: string
           format: date-time
           nullable: true
+    DefectTypeEnum:
+      enum:
+      - SCRATCH
+      - DENT
+      - MISALIGNMENT
+      type: string
+      description: |-
+        * `SCRATCH` - Scratch
+        * `DENT` - Dent
+        * `MISALIGNMENT` - Misalignment
     Image:
       type: object
       properties:
@@ -429,6 +599,110 @@ components:
         file:
           type: string
           format: binary
+    PatchedResultRequest:
+      type: object
+      properties:
+        passed:
+          type: integer
+          nullable: true
+        part_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        defect_type:
+          oneOf:
+          - $ref: '#/components/schemas/DefectTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        defect_description:
+          type: string
+        severity:
+          oneOf:
+          - $ref: '#/components/schemas/SeverityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        corrective_action:
+          type: string
+        inspector:
+          type: integer
+        image:
+          type: integer
+    Result:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        passed:
+          type: integer
+          nullable: true
+        part_number:
+          type: string
+          maxLength: 50
+        inspection_date:
+          type: string
+          format: date-time
+          readOnly: true
+        defect_type:
+          oneOf:
+          - $ref: '#/components/schemas/DefectTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        defect_description:
+          type: string
+        severity:
+          oneOf:
+          - $ref: '#/components/schemas/SeverityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        corrective_action:
+          type: string
+        inspector:
+          type: integer
+        image:
+          type: integer
+      required:
+      - id
+      - image
+      - inspection_date
+      - inspector
+      - part_number
+    ResultRequest:
+      type: object
+      properties:
+        passed:
+          type: integer
+          nullable: true
+        part_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        defect_type:
+          oneOf:
+          - $ref: '#/components/schemas/DefectTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        defect_description:
+          type: string
+        severity:
+          oneOf:
+          - $ref: '#/components/schemas/SeverityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        corrective_action:
+          type: string
+        inspector:
+          type: integer
+        image:
+          type: integer
+      required:
+      - image
+      - inspector
+      - part_number
+    SeverityEnum:
+      enum:
+      - MINOR
+      - MAJOR
+      - CRITICAL
+      type: string
+      description: |-
+        * `MINOR` - Minor
+        * `MAJOR` - Major
+        * `CRITICAL` - Critical
   securitySchemes:
     basicAuth:
       type: http

@@ -5,12 +5,16 @@ import {
   EuiPageTemplate,
   EuiTableFieldDataColumnType,
 } from "@elastic/eui";
-import { caseClient, LoaderData } from "../utils";
+import { caseClient, LoaderData , resultClient, imageClient } from "../utils";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Case } from "../api/generated";
+import { Case,Image } from "../api/generated";
+import { useEffect, useState } from "react";
+import { ImageGrid, SelectedImages } from "../components/imagegrid/ImageGrid";
+import { ImageGridControls } from "../components/imagegrid/ImageGridControls";
 
 interface DashboardProps {
   cases: Case[];
+  images: Image[];
 }
 
 export function Dashboard() {
@@ -35,6 +39,13 @@ export function Dashboard() {
       ),
     },
     {
+      field: "Staus",
+      name:"Inspection Status",
+      sortable: true,
+      render: () => "  Passed",
+
+    },
+    {
       field: "open_datetime",
       name: "Open date",
       sortable: true,
@@ -50,6 +61,23 @@ export function Dashboard() {
       render: (close_datetime: string) =>
         close_datetime ? new Date(close_datetime).toLocaleString() : "Open",
     },
+    {
+      field: "images",
+      name: "Product Overview",
+      render: (images: { id: number; case: number; capture_datetime: string; file: string }[]) => (
+        <>
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src='https://media.istockphoto.com/id/1350722246/photo/server-room-background.webp?s=2048x2048&w=is&k=20&c=fVzk6hc-Q7y72ixrkq4YGBYzj2uu-mhGsPqCR9DjofA='
+              alt={`Image ${index + 1}`}
+              style={{ width: 50, height: 40, marginRight: 5 }}
+            />
+          ))}
+        </>
+      ),
+    },
+
   ];
 
   const getRowProps = (ccase: Case) => {
@@ -91,7 +119,7 @@ export function Dashboard() {
   ];
 
   return (
-    <EuiPageTemplate>
+      <EuiPageTemplate>
       <EuiPageTemplate.Header
         pageTitle={<span>Dashboard</span>}
         iconType={"eye"}
@@ -116,7 +144,21 @@ export const loader: ({
   params,
 }: {
   params: any;
-}) => Promise<DashboardProps> = async ({ params }) => {
-  const { data: cases } = await caseClient.caseList();
-  return { cases };
+}) => Promise<{ cases: Case[]; results: any[] }> = async ({ params }) => {
+  const caseListPromise = caseClient.caseList();
+  const resultDataPromise = resultClient.resultList(); // Assuming there's a method like getResultData() in the resultClient API
+
+  // Wait for both promises to resolve
+  const [caseListResponse, resultDataResponse] = await Promise.all([
+    caseListPromise,
+    resultDataPromise,
+  ]);
+
+  // Extract the data from the responses
+  const { data: cases } = caseListResponse;
+  const { data: results } = resultDataResponse;
+
+  // Return both sets of data
+  return { cases, results};
+
 };
