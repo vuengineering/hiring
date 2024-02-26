@@ -1,4 +1,5 @@
 from inspektor.apps.core.models import Image
+from django.db import models
 
 
 def run_inference_on_image(image: Image):
@@ -9,5 +10,7 @@ def run_inference_on_image(image: Image):
 
     Returns: ???
 
+
     """
-    pass
+    result = model.predict(image)
+    return result
