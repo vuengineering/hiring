@@ -171,6 +171,30 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/case/{id}/result/:
+    get:
+      operationId: case_result_retrieve
+      description: A base viewset that allows reading (and enables filtering objects
+        by ids), creating and updating objects.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this case.
+        required: true
+      tags:
+      - case
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseResult'
+          description: ''
   /api/image/:
     get:
       operationId: image_list
@@ -334,6 +358,30 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/image/{id}/result/:
+    get:
+      operationId: image_result_retrieve
+      description: A base viewset that allows reading (and enables filtering objects
+        by ids), creating and updating objects.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this image.
+        required: true
+      tags:
+      - image
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResult'
+          description: ''
 components:
   schemas:
     Case:
@@ -371,6 +419,30 @@ components:
           type: string
           format: date-time
           nullable: true
+    CaseResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageResult'
+          readOnly: true
+        open_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        close_datetime:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - id
+      - images
+      - open_datetime
     Image:
       type: object
       properties:
@@ -405,6 +477,30 @@ components:
       required:
       - capture_datetime
       - file
+    ImageResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        case:
+          type: integer
+          nullable: true
+        results:
+          allOf:
+          - $ref: '#/components/schemas/Result'
+          readOnly: true
+        capture_datetime:
+          type: string
+          format: date-time
+        file:
+          type: string
+          format: uri
+      required:
+      - capture_datetime
+      - file
+      - id
+      - results
     PatchedCaseRequest:
       type: object
       properties:
@@ -429,6 +525,34 @@ components:
         file:
           type: string
           format: binary
+    Result:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        result:
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          minimum: -2147483648
+          maximum: 2147483647
+        image:
+          type: integer
+          nullable: true
+      required:
+      - id
+    StatusEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: integer
+      description: |-
+        * `1` - In Progress
+        * `2` - Pass
+        * `3` - Fail
   securitySchemes:
     basicAuth:
       type: http

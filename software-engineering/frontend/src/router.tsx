@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import * as caseOverview from "./views/CaseOverview";
 import * as dashboard from "./views/Dashboard";
+import * as caseResult from "./views/CaseResultview";
 
 export function createRoutes() {
   return createRoutesFromElements(
@@ -16,6 +17,11 @@ export function createRoutes() {
         loader={dashboard.loader}
       />
       <Route path={"case"}>
+        <Route
+          path={":caseId/result"}
+          element={<caseResult.CaseResultView />}
+          loader={caseResult.loader}
+        />
         <Route
           path={":caseId"}
           element={<caseOverview.CaseOverview />}

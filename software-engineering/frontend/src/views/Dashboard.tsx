@@ -50,6 +50,29 @@ export function Dashboard() {
       render: (close_datetime: string) =>
         close_datetime ? new Date(close_datetime).toLocaleString() : "Open",
     },
+    {
+      field: "close_datetime",
+      name: "Close date",
+      sortable: true,
+      dataType: "date",
+      render: (close_datetime: string) =>
+        close_datetime ? new Date(close_datetime).toLocaleString() : "Open",
+    },
+    {
+      field: "id",
+      name: "View Result",
+      sortable: true,
+      render: (id: number) => (
+        <EuiButton
+          color="primary"
+          onClick={() => {
+            navigate(`/case/${id}/result`);
+          }}
+        >
+          Result
+        </EuiButton>
+      ),
+    },
   ];
 
   const getRowProps = (ccase: Case) => {
@@ -57,9 +80,9 @@ export function Dashboard() {
     return {
       "data-test-subj": `row-${id}`,
       className: "customRowClass",
-      onClick: () => {
-        navigate(`/case/${id}`);
-      },
+      // onClick: () => {
+      //   navigate(`/case/${id}`);
+      // },
     };
   };
 
