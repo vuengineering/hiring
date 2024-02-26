@@ -89,7 +89,7 @@ class InspectionResult(models.Model):
     passed = models.BooleanField(default=False)
     defect_type = models.CharField(max_length=20, choices=DEFECT_TYPES, blank=True)
     defect_description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='inspection_images/', blank=True)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
     severity = models.CharField(max_length=10, choices=SEVERITY_LEVELS, blank=True)
     corrective_action = models.TextField(blank=True)
 
