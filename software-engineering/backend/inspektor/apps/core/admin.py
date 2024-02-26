@@ -20,3 +20,14 @@ class ImageAdmin(admin.ModelAdmin):
         "capture_datetime",
     )
     list_filter = ("case",)
+
+
+@admin.register(models.Result)
+class ResultAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "image",
+        "result",
+        "status",
+    )
+    list_filter = ("image", "status")

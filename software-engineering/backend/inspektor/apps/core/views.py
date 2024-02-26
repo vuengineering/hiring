@@ -1,6 +1,9 @@
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.decorators import action
 from rest_framework import viewsets
+from rest_framework.response import Response
+
 
 from inspektor.apps.core import models, serializers
 from inspektor.apps.ml.tasks import run_inference_on_image
@@ -32,6 +35,17 @@ class CaseViewSet(ModelViewSetWithIds):
     serializer_class = serializers.CaseSerializer
     model_class = models.Case
 
+    @extend_schema(
+        responses=serializers.CaseResultSerializer,
+    )
+    @action(detail=True, methods=["get"], url_path="result")
+    def result(self, request, *args, **kwargs):
+        """
+        Display the Case result
+        """
+        instance = self.get_object()
+        return Response(serializers.CaseResultSerializer(instance).data)
+
 
 @extend_schema_view(
     create=extend_schema(request={"multipart/form-data": serializers.ImageSerializer})
@@ -45,3 +59,14 @@ class ImageViewSet(ModelViewSetWithIds):
         image = serializer.save()
         # ↓↓↓ this is where the magic should happen ↓↓↓
         run_inference_on_image(image)
+
+    @extend_schema(
+        responses=serializers.ImageResultSerializer,
+    )
+    @action(detail=True, methods=["get"], url_path="result")
+    def result(self, request, *args, **kwargs):
+        """
+        Display the result
+        """
+        instance = self.get_object()
+        return Response(serializers.ImageResultSerializer(instance).data)
